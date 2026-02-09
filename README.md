@@ -43,3 +43,13 @@ The program outputs ER diagrams:
 >
 >   The output path will be in the same folder as input path.
 
+
+
+The output diagram shows column-level relationships.
+
+![image-20260209232335732](./assets/image-20260209232335732.png)
+
+It analysis views and materialized views to show how the calculated columns are derived from source tables. The relationships are shown in dashed lines.
+
+![image-20260209232401010](./assets/image-20260209232401010.png)
+

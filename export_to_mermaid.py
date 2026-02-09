@@ -5,8 +5,8 @@ import re
 def sanitize_dtype(dtype: str) -> str:
     """Convert SQL types to single-word Mermaid-safe tokens."""
     if not dtype or dtype == "nan":
-        return "unknown"
-    dtype = re.sub(r"\(.*?\)", "", dtype)
+        return "_"
+    dtype = re.sub(r"\((.*?)\)", r"_\1", dtype)
     dtype = dtype.strip().replace(" ", "_")
     dtype = dtype.replace(".", "_")
     return dtype
@@ -37,7 +37,7 @@ def generate_mermaid_erd(df: pd.DataFrame) -> str:
     entities: dict[str, list[str]] = {}
     for _, row in df.iterrows():
         tbl = row["table_short"]
-        col = row["column_name"] if pd.notna(row["column_name"]) else "unknown"
+        col = row["column_name"] if pd.notna(row["column_name"]) else "_"
         dtype = sanitize_dtype(str(row["data_type"]))
 
         markers = []
@@ -73,7 +73,7 @@ def generate_mermaid_erd(df: pd.DataFrame) -> str:
     mv_rows = df[(df["table_type"] == "materialized_view") & (df["column_src"] != "")]
     for _, row in mv_rows.iterrows():
         src = row["table_short"]
-        src_col = row["column_name"] if pd.notna(row["column_name"]) else "unknown"
+        src_col = row["column_name"] if pd.notna(row["column_name"]) else "_"
         sources = [s.strip() for s in row["column_src"].split(",")]
         for ref in sources:
             parts = ref.replace("public.", "").split(".")
