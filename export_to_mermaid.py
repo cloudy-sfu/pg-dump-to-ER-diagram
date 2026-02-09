@@ -49,7 +49,8 @@ def generate_mermaid_erd(df: pd.DataFrame) -> str:
             markers.append("UK")
         marker_str = ",".join(markers)
 
-        attr_line = f"    {dtype} {col}"
+        req = "*" if row.get("required") else ""
+        attr_line = f"    {dtype} {col}{req}"
         if marker_str:
             attr_line += f" {marker_str}"
 
